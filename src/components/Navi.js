@@ -1,14 +1,15 @@
 import React,{useEffect,useState} from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation ,useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
-import LoginPage from '../pages/Login';
+
 
 const Navi = () => {
     const[show,setShow] = useState(false);
-    const {pathname} = useLocation();
+    const { pathname } = useLocation();
     //사용자가 쓰고 있는 경로 내용
-    console.log('pathname',pathname);
-    const [search, setSearch] = useState("");
+    const [inputValue, setinputValue] = useState("");
+    const navi = useNavigate();
+    
 
     useEffect(()=> {
         window.addEventListener('scroll', ()=> {
@@ -25,9 +26,18 @@ const Navi = () => {
     }, [])
 
     const handleChange = (e) => {
-      setSearch(e.target.value);
-      console.log('e.target.value')
+      setinputValue(e.target.value);
+      //navi(`/search?q=${e.target.value}`);
     }
+
+    const handleKeyPress = (e) => {
+      if (e.key === 'Enter') {
+        navi(`/search?q=${inputValue}`);
+        setinputValue('');
+      }
+    }
+
+    console.log('useLocation.search',useLocation().search);
   return (
     <div>
       <NavWrapper show={show}>
@@ -36,11 +46,13 @@ const Navi = () => {
             onClick = {()=>window.location.href="/"}></img>
         </Logo>
         {pathname === "/" ? (<Loginhere>Log-In</Loginhere>) :
-        <Input value={search}
+        <Input value={inputValue}
                onChange={handleChange} 
+               onKeyPress={handleKeyPress}
                className="nav_input" 
                type="text" 
-               placeholder="searching"/>}
+               placeholder="searching"
+                />}
       </NavWrapper>
     </div>
   )
@@ -85,7 +97,7 @@ const NavWrapper = styled.nav`
   padding: 0 36px;
   letter-spacing : 16px;
   z-index:3;
-  `
+  `;
 const Logo = styled.a`
   padding : 0;
   width : 120px;
@@ -97,3 +109,6 @@ const Logo = styled.a`
     display : block;
     width: 100%;
   )`
+
+  //useNavigate 페이지 경로를 넣어서 해당 경로로 이동 하는 걸 도와줌 , 특정 이벤트 실행 -> 동작
+  

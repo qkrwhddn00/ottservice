@@ -1,14 +1,9 @@
 import './App.css';
 import Navi from './components/Navi';
-import Banner from './components/Banner'
-import styled from 'styled-components';
-import Category from './components/Category';
-import Row from './components/Row';
-import requests from './api/request';
 import { Outlet,Routes,Route } from 'react-router-dom';
 import Mainpage from './pages/Main';
 import SearchPage from './pages/Search';
-import LoginPage from './pages/Login';
+
 
 const Layout =() => {
   return (
